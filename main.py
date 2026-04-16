@@ -74,7 +74,7 @@ def main():
 
     # Leaderboard button that launches a window to display rankings based on points awarded.
     Button(window, text="View Leaderboard", command=leaderboard).pack(pady=5)
-    
+
 #MAIN LOOP
     # mainloop() keeps the program running and waits for user interaction.
     window.mainloop()
