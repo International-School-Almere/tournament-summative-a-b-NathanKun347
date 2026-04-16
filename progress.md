@@ -8,7 +8,7 @@
 # 1. Project Overview
 
 ## Project Title
-[Write your project title here]
+Nathan Tournament summative A-B
 
 ## Project Description
 [Briefly explain what the project is about]
@@ -83,30 +83,31 @@
 - What did I learn?
 
 ---
-## Session [02]
-**Date:** [Add date later]  
-**Time spent:** [e.g. 45 min / 2 hours]  
-**Focus:** [What did you work on?]
+## Session [01]
+**Date:** [15/03/2026]  
+**Time spent:** 4 hours
+**Focus:** researching about TKinter and how to set up the GUI as well as understanding requirements for the assignment.
 
 ### Problems / Challenges
-- 
-- 
+- Forgotten some of the ways to get Tkinter running
+- Kept getting errors because i forgot mainloop()
+- Confused about differece of pack(), grid() and place()
 
 ### Solutions / Actions Taken
-- 
-- 
+- Watched full youtube tutorial by DJ Oamen about Tkinter and GUI in a similar program + research on websites like w3schools
+- Set up global variables list although I still lacked some understanding about dictionaries (reffered to pokidex librabry for assistance)
 
 ### Evidence
 - [Added code]
 - [Updated design]
 - [Created sketch]
-- [Researched source]
-- [Uploaded image/screenshot]
+- DJ Oamen python tournament system on Youtube
+- image visible in file of w3schools
 
 ### Reflection
-- What went well?
-- What needs improvement?
-- What did I learn?
+- I planned the 5 events and 20 individuals quite well
+- I need to make more progress with the buttons I just introduced
+- I learnt how to set up Tkinter properly without it closing.
 
 ---
 
