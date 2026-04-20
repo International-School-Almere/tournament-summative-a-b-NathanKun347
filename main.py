@@ -61,8 +61,9 @@ def main():
     global event_var
     event_var = StringVar(value="Event 1")
 
+    # Added command=change_event so when user picks different event it updates current_event variable
     OptionMenu(window, event_var, "Event 1", "Event 2", "Event 3",
-               "Event 4", "Event 5").pack()
+               "Event 4", "Event 5", command=change_event).pack()
 
 #MAIN BUTTONS
 
@@ -82,13 +83,16 @@ def main():
     window.mainloop()
 
 
-#PLACEHOLDER FUNCTIONS
+# NEW FUNCTION FOR SESSION 3 - EVENT CHANGE HANDLER
+# This function runs when user picks different event from dropdown
+# It updates the current_event variable so scores go to right event
+def change_event(selection):
+    global current_event
+    current_event = int(selection.split()[1])
 
-# These functions are placeholders so the buttons don't cause errors.
-# They will be implemented later when the rest of the program is developed.
 
+# REGISTRATION FUNCTION - COMPLETED IN SESSION 2
 def register():
-    # THIS IS THE NEW CODE FOR SESSION 2 - REGISTRATION IMPLEMENTATION
     # Create popup window for registration
     reg = Toplevel()
     reg.title("Register Participant")
@@ -177,7 +181,7 @@ def register():
                 "name": name,
                 "members": members,
                 "events": selected_events,
-                "Points": 0
+                "points": 0
             }
             teams.append(team)
             tkinter.messagebox.showinfo("Success", f"Team {name} registered!")
@@ -191,8 +195,8 @@ def register():
             person = {
                 "id": len(individuals) + 1,
                 "name": name,
-                "Events": selected_events,
-                "Points": 0
+                "events": selected_events,
+                "points": 0
             }
             individuals.append(person)
             tkinter.messagebox.showinfo("Success", f"Individual {name} registered!")
@@ -201,13 +205,180 @@ def register():
     
     Button(reg, text="Register", command=do_register).pack(pady=20)
 
-# Still empty - will implement in Session 3
+
+# NEW CODE FOR SESSION 3 - SCORE ENTRY IMPLEMENTATION
+# This creates a popup window where user enters scores for current event
+# It shows all registered teams and individuals with Entry boxes for their scores
 def enter_scores():
-    # TODO: Create a form where the user can input finishing positions
-    # and the program will automatically assign points.
-    pass
+    # Create the score entry popup window
+    score_win = Toplevel()
+    score_win.title("Enter Scores - Event " + str(current_event))
+    score_win.geometry("300x500")
+    
+    # Show which event we are entering scores for
+    Label(score_win, text="Event " + str(current_event)).pack()
+    
+    # TEAM SCORES SECTION
+    # Show label for teams section
+    Label(score_win, text="TEAMS:").pack()
+    
+    # Create a list to store the Entry widgets for team scores
+    # This is needed so we can read the values later when saving
+    team_entries = []
+    
+    # Loop through registered teams and create Entry boxes for each
+    for i in range(len(teams)):
+        # Use Frame to put label and Entry side by side
+        frame = Frame(score_win)
+        frame.pack()
+        Label(frame, text=teams[i]["name"] + ":").pack(side=LEFT)
+        entry = Entry(frame, width=8)
+        entry.pack(side=LEFT)
+        team_entries.append(entry)
+    
+    # Fill empty slots if less than 4 teams registered
+    # This keeps the layout consistent and allows for future teams
+    for i in range(len(teams), 4):
+        frame = Frame(score_win)
+        frame.pack()
+        Label(frame, text="Team " + str(i+1) + ":").pack(side=LEFT)
+        entry = Entry(frame, width=8)
+        entry.pack(side=LEFT)
+        team_entries.append(entry)
+    
+    # INDIVIDUAL SCORES SECTION
+    # Show label for individuals section
+    Label(score_win, text="INDIVIDUALS:").pack()
+    
+    # Create a list to store the Entry widgets for individual scores
+    ind_entries = []
+    
+    # Loop through registered individuals and create Entry boxes for each
+    for i in range(len(individuals)):
+        frame = Frame(score_win)
+        frame.pack()
+        Label(frame, text=individuals[i]["name"] + ":").pack(side=LEFT)
+        entry = Entry(frame, width=8)
+        entry.pack(side=LEFT)
+        ind_entries.append(entry)
+    
+    # Fill empty slots if less than 20 individuals registered
+    for i in range(len(individuals), 20):
+        frame = Frame(score_win)
+        frame.pack()
+        Label(frame, text="Person " + str(i+1) + ":").pack(side=LEFT)
+        entry = Entry(frame, width=8)
+        entry.pack(side=LEFT)
+        ind_entries.append(entry)
+    
+    # Function to save the scores when button is clicked
+    def save_scores():
+        global scores
+        
+        # Create dictionary for this event if it doesn't exist yet
+        if current_event not in scores:
+            scores[current_event] = {}
+        
+        # Save team scores from Entry widgets
+        for i in range(4):
+            try:
+                # Try to convert the Entry text to an integer
+                score = int(team_entries[i].get())
+                if i < len(teams):
+                    # Use TEAM + id as key to identify which team
+                    scores[current_event]["TEAM" + str(teams[i]["id"])] = score
+                else:
+                    scores[current_event]["TEAM" + str(i+1)] = score
+            except:
+                # If Entry is empty or not a number, skip it
+                pass
+        
+        # Save individual scores from Entry widgets
+        for i in range(20):
+            try:
+                score = int(ind_entries[i].get())
+                if i < len(individuals):
+                    # Use IND + id as key to identify which individual
+                    scores[current_event]["IND" + str(individuals[i]["id"])] = score
+                else:
+                    scores[current_event]["IND" + str(i+1)] = score
+            except:
+                pass
+        
+        # Calculate points based on the new scores
+        calculate_points()
+        tkinter.messagebox.showinfo("Done", "Scores saved!")
+        score_win.destroy()
+    
+    Button(score_win, text="Save", command=save_scores).pack(pady=10)
 
 
+# NEW FUNCTION FOR SESSION 3 - POINT CALCULATION
+# This calculates points for all participants based on their scores across all events
+# Uses manual sorting (bubble sort) to demonstrate algorithm understanding for BTEC
+def calculate_points():
+    # Reset all points to 0 before recalculating
+    # This prevents double-counting if scores are updated multiple times
+    for t in teams:
+        t["points"] = 0
+    for p in individuals:
+        p["points"] = 0
+    
+    # Calculate points for each event (1 through 5)
+    for event_num in range(1, 6):
+        # Skip events that don't have any scores entered yet
+        if event_num not in scores:
+            continue
+        
+        # Make a list of (participant_id, score) tuples from the scores dictionary
+        score_list = []
+        for pid in scores[event_num]:
+            score_list.append((pid, scores[event_num][pid]))
+        
+        # Sort by score using bubble sort (manual implementation for BTEC)
+        # This demonstrates understanding of sorting algorithms
+        for i in range(len(score_list)):
+            for j in range(len(score_list)-1):
+                # Compare adjacent elements and swap if out of order
+                if score_list[j][1] < score_list[j+1][1]:
+                    temp = score_list[j]
+                    score_list[j] = score_list[j+1]
+                    score_list[j+1] = temp
+        
+        # Give points based on position
+        position = 1
+        last_score = None
+        
+        for i in range(len(score_list)):
+            pid, score = score_list[i]
+            
+            # If score is different from previous, update position
+            # This handles ties - same score gets same position
+            if score != last_score:
+                position = i + 1
+            
+            # Only give points if position is 10 or better
+            if position <= 10:
+                pts = points[position-1]
+            else:
+                pts = 0
+            
+            # Add points to team or individual based on ID prefix
+            if pid.startswith("TEAM"):
+                tid = int(pid.replace("TEAM", ""))
+                for t in teams:
+                    if t["id"] == tid:
+                        t["points"] += pts
+            else:
+                iid = int(pid.replace("IND", ""))
+                for p in individuals:
+                    if p["id"] == iid:
+                        p["points"] += pts
+            
+            last_score = score
+
+
+# Still empty - will implement in Session 4
 def leaderboard():
     # TODO: Calculate total points and display the ranking of competitors.
     pass

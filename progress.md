@@ -84,30 +84,88 @@ Nathan Tournament summative A-B
 - What did I learn?
 
 ---
-## Session [03]
-**Date:** [Add date later]  
-**Time spent:** [e.g. 45 min / 2 hours]  
-**Focus:** [What did you work on?]
+Session [03]
+Date: 19/03/2026
+Time spent: 8 hours
+Focus: Score Entry System and Point Calculation - Making Enter scores work with actual input fields and automatic point calculation
+Problems / Challenges
 
-### Problems / Challenges
-- 
-- 
 
-### Solutions / Actions Taken
-- 
-- 
+3 hours was spent understanding how to create an Entry widget for each participant dynamically.
 
-### Evidence
-- [Added code]
-- [Updated design]
-- [Created sketch]
-- [Researched source]
-- [Uploaded image/screenshot]
 
-### Reflection
-- What went well?
-- What needs improvement?
-- What did I learn?
+I was very confused on how to map the values of the Entry fields back into the appropriate list of participants.
+
+
+Index Errors continually popped up whenever I tried to access teams[i] when less than 4 teams were registered.
+
+
+I had trouble at first as to why the dictionary used the event number as the key.
+
+
+I was very confused on why the sorting algorithm needed to work on its own and was trying to use the built-in function. For BTEC I needed to demonstrate I understood how sorting works so it had to be a custom sort.
+
+
+Took me 2 hours to get the point calculation to give correct points. I forgot how tied positions should have the same rank and then the following rank after the tie should skip forward.
+
+
+The calculation points function crashed when I gave it empty score lists; needed to have checks for these scenarios.
+
+
+Solutions / Actions Taken
+
+
+I consulted YouTube and found the following tutorial on "Python tkinter dynamic widgets tutorial."
+
+
+I used a Frame widget for the entry of the individual scores and another one for the teams' scores to separate the sections cleanly.
+
+
+I created a parallel list of Entry widgets for each of the teams and individuals registered to ensure each widget was assigned correctly.
+
+
+I manually programmed bubble sort for BTEC to prove my understanding of sorting algorithms.
+
+
+I ensured the correct rank was assigned after tied positions by skipping the following position in the sort.
+
+
+Before each point calculation I reset all point values to zero so there wasn't double counting occurring.
+
+
+I programmed a function called change_event and have added this to the dropdown menu so that the current event is updated.
+
+
+Evidence
+
+
+[Added code] - The score entry window is dynamically created with the appropriate amount of Entry fields based on the number of participants.
+
+
+[Added code] - The calculation_points function works with the sorting algorithm I coded manually which also deals with ties appropriately.
+
+
+[Added code] - The event dropdown menu has been wired up using a function called change_event().
+
+
+[Researched source] - Stack Overflow: "Python bubble sort implementation"
+
+
+[Screenshot] - A view of the score entry window with registered participants.
+
+
+Reflection
+
+
+What went well? The score entry window dynamically updates based on registered participants. The bubble sort implementation works and handles ties as needed. The points calculation for teams and individuals updates correctly.
+
+
+What needs improvement? The empty slot filler which is creating unused Entry fields is still quite messy. Although the sort function is O(n) it will not affect the speed very much due to the small number of registered users but I would consider a faster algorithm if there was likely to be more than 20–30 registered users. I also want to add feedback to the score entry so you can immediately see how the scores are affecting the totals.
+
+
+What did I learn? Toplevel can be organized using Frame widgets to keep it tidy. You can create dictionary keys by concatenating strings. Bubble sort is easy to understand and implement but is not very efficient. Remember to reset totals before recalculating!
+
+
 
 ---
 
