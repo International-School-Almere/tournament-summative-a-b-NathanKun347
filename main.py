@@ -1,6 +1,8 @@
 # Tournament Scoring System
+# BTEC Unit 4 Programming Assignment
+# My first Python project with GUI
 
-# Importing everything from the Tkinter library so I can create a GUI (Graphical User Interface).
+# Importing everything from the Tkinter library so I can Create a GUI (Graphical User Interface).
 # I used the classroom examples for this from the code python password manager to get the GUI.
 from tkinter import *
 
@@ -20,7 +22,7 @@ individuals = []
 # which makes it easier to link a team/individual to their score.
 scores = {}
 
-# Variable to keep track of which event is currently selected.
+# Variable to keep track of which Event is currently selected.
 # The assignment requires 5 events so this helps track them.
 current_event = 1
 
@@ -86,11 +88,120 @@ def main():
 # They will be implemented later when the rest of the program is developed.
 
 def register():
-    # TODO: Create a new window that allows users to register teams or individuals.
-    # This will include Entry widgets for typing names.
-    pass
+    # THIS IS THE NEW CODE FOR SESSION 2 - REGISTRATION IMPLEMENTATION
+    # Create popup window for registration
+    reg = Toplevel()
+    reg.title("Register Participant")
+    reg.geometry("400x500")
+    
+    # Need to use global here so we can modify the main lists
+    global teams, individuals
+    
+    Label(reg, text="Register New Participant", font=("Arial", 14)).pack(pady=10)
+    
+    # Type selection
+    Label(reg, text="Type:").pack()
+    p_type = StringVar(value="individual")
+    Radiobutton(reg, text="Individual", variable=p_type, 
+               value="individual").pack()
+    Radiobutton(reg, text="Team", variable=p_type, 
+               value="team").pack()
+    
+    # Name entry
+    Label(reg, text="Name:").pack()
+    name_entry = Entry(reg)
+    name_entry.pack()
+    
+    # Event selection for registration
+    Label(reg, text="Select events to enter:").pack()
+    event_checks = []
+    for i in range(5):
+        var = BooleanVar(value=True)
+        Checkbutton(reg, text=f"Event {i+1}", variable=var).pack()
+        event_checks.append(var)
+    
+    # Team member entries (only shown if Team selected)
+    # Using a frame to group these together
+    team_frame = Frame(reg)
+    team_frame.pack(pady=10)
+    Label(team_frame, text="Team Members (if Team):").pack()
+    
+    member_entries = []
+    for i in range(5):
+        Label(team_frame, text=f"Member {i+1}:").pack(side=LEFT)
+        entry = Entry(team_frame, width=10)
+        entry.pack(side=LEFT, padx=5)
+        member_entries.append(entry)
+    
+    def do_register():
+        # Get the values from the form
+        name = name_entry.get()
+        
+        # Basic validation
+        if not name:
+            tkinter.messagebox.showerror("Error", "Please enter a name!")
+            return
+        
+        # Check for duplicates
+        for t in teams:
+            if t["name"] == name:
+                tkinter.messagebox.showerror("Error", "Team name already exists!")
+                return
+        for p in individuals:
+            if p["name"] == name:
+                tkinter.messagebox.showerror("Error", "Individual name already exists!")
+                return
+        
+        # Get selected events
+        selected_events = []
+        for i in range(5):
+            if event_checks[i].get():
+                selected_events.append(i+1)
+        
+        # Check limits and register
+        if p_type.get() == "team":
+            if len(teams) >= 4:
+                tkinter.messagebox.showerror("Error", "Maximum 4 teams allowed!")
+                return
+            
+            # Get member name - filter out empty ones
+            members = []
+            for entry in member_entries:
+                member_name = entry.get()
+                if member_name:
+                    members.append(member_name)
+            
+            # Create team dictionary
+            team = {
+                "id": len(teams) + 1,
+                "name": name,
+                "members": members,
+                "events": selected_events,
+                "Points": 0
+            }
+            teams.append(team)
+            tkinter.messagebox.showinfo("Success", f"Team {name} registered!")
+            
+        else:
+            if len(individuals) >= 20:
+                tkinter.messagebox.showerror("Error", "Maximum 20 individuals allowed!")
+                return
+            
+            # Create Individual dictionary
+            person = {
+                "id": len(individuals) + 1,
+                "name": name,
+                "Events": selected_events,
+                "Points": 0
+            }
+            individuals.append(person)
+            tkinter.messagebox.showinfo("Success", f"Individual {name} registered!")
+        
+        reg.destroy()
+    
+    Button(reg, text="Register", command=do_register).pack(pady=20)
 
-
+# Still empty - will implement in Session 3
 def enter_scores():
     # TODO: Create a form where the user can input finishing positions
     # and the program will automatically assign points.
