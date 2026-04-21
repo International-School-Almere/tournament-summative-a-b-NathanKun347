@@ -166,7 +166,32 @@ What needs improvement? The empty slot filler which is creating unused Entry fie
 What did I learn? Toplevel can be organized using Frame widgets to keep it tidy. You can create dictionary keys by concatenating strings. Bubble sort is easy to understand and implement but is not very efficient. Remember to reset totals before recalculating!
 
 
+Session [04]
 
+Date: 20/03/2026
+Time spent: 1 hour
+Focus: Implement leaderboard display. The "View Leaderboard" button will display current rankings.
+
+Problems / Challenges
+Only had one hour as next class started at 2pm and had to finish it by 1pm.
+Forgot how to create a Listbox widget. Kept trying to use label which doesn't scroll well.
+Difficulty understanding how to sort both team and individual data together within one list.
+Attempted to use Python's sort() function before realizing the assignment required manual sorting.
+Couldn't remember listbox syntax (insert(END, ...) versus append()).
+Solutions / Actions Taken
+Used the tkinter's Listbox widget for the display.
+Created a single list to hold both team and individual scores for unifying ranking and displayed as tuples (Score, Name).
+Re-used the bubble sort pattern from calculating points to make it consistent with the rest of the code.
+Included header row (Rank, Player/Team, Score) and a horizontal line separator for improved readability.
+Used END constant for inserting new data into the listbox.
+Evidence
+[Attached Code] - Functioning leaderboard popup with listbox display.
+[Attached Code] - Updated leaderboard button functionality.
+[Attached Screenshot] - Screenshot of the leaderboard showing test data with correct ranking order.
+Reflection
+What went well? Leaderboard is now visible and correctly sorts both teams and individuals together. The Listbox widget supports scrolling if the data is too large. Bubble sort algorithm used in the leaderboard implementation is consistent with other scoring aspects.
+What needs improvement? Was unable to implement a save/load system due to lack of time (only 1 hour before the next class). The leaderboard does not update automatically as scores change; the button must be clicked each time for it to refresh. No visual cue to highlight the current leader.
+What did I learn? Listbox widget is suitable for displaying lists of text. Using insert(END, ...) adds items to the bottom of the listbox. Combining data from different sources into a single list is possible using tuple structure. Bubble sort works regardless of the data types being sorted as long as they can be compared.
 ---
 
 ---

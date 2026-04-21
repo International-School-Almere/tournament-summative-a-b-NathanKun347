@@ -83,7 +83,7 @@ def main():
     window.mainloop()
 
 
-# NEW FUNCTION FOR SESSION 3 - EVENT CHANGE HANDLER
+# EVENT CHANGE HANDLER - COMPLETED IN SESSION 3
 # This function runs when user picks different event from dropdown
 # It updates the current_event variable so scores go to right event
 def change_event(selection):
@@ -206,7 +206,7 @@ def register():
     Button(reg, text="Register", command=do_register).pack(pady=20)
 
 
-# NEW CODE FOR SESSION 3 - SCORE ENTRY IMPLEMENTATION
+# SCORE ENTRY FUNCTION - COMPLETED IN SESSION 3
 # This creates a popup window where user enters scores for current event
 # It shows all registered teams and individuals with Entry boxes for their scores
 def enter_scores():
@@ -313,7 +313,7 @@ def enter_scores():
     Button(score_win, text="Save", command=save_scores).pack(pady=10)
 
 
-# NEW FUNCTION FOR SESSION 3 - POINT CALCULATION
+# POINT CALCULATION FUNCTION - COMPLETED IN SESSION 3
 # This calculates points for all participants based on their scores across all events
 # Uses manual sorting (bubble sort) to demonstrate algorithm understanding for BTEC
 def calculate_points():
@@ -378,10 +378,57 @@ def calculate_points():
             last_score = score
 
 
-# Still empty - will implement in Session 4
+# NEW CODE FOR SESSION 4 - LEADERBOARD IMPLEMENTATION
+# This creates a popup window showing the current rankings of all participants
+# It combines teams and individuals into one sorted list for unified display
 def leaderboard():
-    # TODO: Calculate total points and display the ranking of competitors.
-    pass
+    # Create the leaderboard popup window
+    lb = Toplevel()
+    lb.title("Leaderboard")
+    lb.geometry("400x500")
+    
+    # Title for the leaderboard window
+    Label(lb, text="Leaderboard", font=("Arial", 16)).pack()
+    
+    # Combine everyone into one list for ranking
+    # Each entry is a tuple: (name, type, points)
+    everyone = []
+    
+    # Add all teams to the combined list
+    for t in teams:
+        everyone.append((t["name"], "Team", t["points"]))
+    
+    # Add all individuals to the combined list
+    for p in individuals:
+        everyone.append((p["name"], "Individual", p["points"]))
+    
+    # Sort by points using bubble sort (manual implementation for BTEC)
+    # Sorts in descending order so highest points are at the top
+    for i in range(len(everyone)):
+        for j in range(len(everyone)-1):
+            if everyone[j][2] < everyone[j+1][2]:
+                temp = everyone[j]
+                everyone[j] = everyone[j+1]
+                everyone[j+1] = temp
+    
+    # Create a Listbox widget to display the rankings
+    # Listbox is better than Labels because it can scroll if there are many entries
+    listbox = Listbox(lb, width=50)
+    listbox.pack(padx=10, pady=10, fill=BOTH, expand=True)
+    
+    # Add header row to the Listbox
+    listbox.insert(END, "Rank Name Type Points")
+    
+    # Add separator line for visual clarity
+    listbox.insert(END, "-" * 40)
+    
+    # Loop through sorted list and add each participant to the Listbox
+    for i in range(len(everyone)):
+        name, ptype, pts = everyone[i]
+        # Format each line with rank, name, type and points
+        line = str(i+1) + " " + name + " " + ptype + " " + str(pts)
+        listbox.insert(END, line)
+
 
 # Program starts here as it calls the main() function which then sets up the GUI screen leaving it ready for the user to interact with.
 
