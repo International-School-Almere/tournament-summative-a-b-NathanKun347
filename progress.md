@@ -200,7 +200,7 @@ Save and load are both functional, proved by loading the program and seeing regi
 The current text format is very brittle - manually editing this file will likely crash the load function. Also, there is currently no validation built in to check that data being loaded adheres to current tournament rules (e.g. The ability to load 5 teams when a maximum of 4 are registered). The 'except:' in the load function is very general; should be more specific in terms of what error type can be expected.
 
 #### What I learned?
-File IO requires closing the file, and I must remember to save all relevant data (like members' associated events). Strip() is essential to deal with newline characters read from a file, and the split() function is crucial for parsing data that uses a specific delimiter. Organizing different types of data in a single text file requires using section headers. Global variables need to be explicitly declared with global within any function that is intended to entirely overwrite the existing global variable.
+File IO requires closing the file, and I must remember to save all relevant data (like members' associated events). Strip() is essential to deal with newline characters read from a file, and the split() function is crucial for parsing the data that uses a specific delimiter. Organizing different types of data in a single text file requires using section headers. Global variables need to be explicitly declared with global within any function that is intended to entirely overwrite the existing global variable.
 
 ---
 
@@ -249,4 +249,4 @@ File IO requires closing the file, and I must remember to save all relevant data
 [Write a short final judgment of the project]
 
 ---
--
+- 

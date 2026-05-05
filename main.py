@@ -568,6 +568,6 @@ def load():
 
 # Program starts here as it calls the main() function which then sets up the GUI screen leaving it ready for the user to interact with.
 
-# This line ensures the main() function only runs when the file is executed directly.
+# This line ensuress the main() function only runs when the file is executed directly.
 if __name__ == "__main__":
     main()
