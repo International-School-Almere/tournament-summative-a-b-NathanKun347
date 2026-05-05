@@ -78,6 +78,14 @@ def main():
     # Leaderboard button that launches a window to display rankings based on points awarded.
     Button(window, text="View Leaderboard", command=leaderboard).pack(pady=5)
 
+    # Save button that saves all current data to a text file so it can be loaded later.
+    # Added in Session 5 - needed for data persistence between program runs.
+    Button(window, text="Save", command=save).pack(pady=5)
+
+    # Load button that reads data back from the text file into the program.
+    # Added in Session 5 - allows resuming a tournament after closing the program.
+    Button(window, text="Load", command=load).pack(pady=5)
+
 #MAIN LOOP
     # mainloop() keeps the program running and waits for user interaction.
     window.mainloop()
@@ -378,9 +386,9 @@ def calculate_points():
             last_score = score
 
 
-# NEW CODE FOR SESSION 4 - LEADERBOARD IMPLEMENTATION
+# LEADERBOARD FUNCTION - COMPLETED IN SESSION 4
 # This creates a popup window showing the current rankings of all participants
-# It combines teams and individuals into one sorted list for unified display
+# It combines teams and individuals into one sorted list for them to be shown together
 def leaderboard():
     # Create the leaderboard popup window
     lb = Toplevel()
@@ -428,6 +436,134 @@ def leaderboard():
         # Format each line with rank, name, type and points
         line = str(i+1) + " " + name + " " + ptype + " " + str(pts)
         listbox.insert(END, line)
+
+
+# NEW CODE FOR SESSION 5 - SAVE FUNCTION
+# This saves all tournament data to a text file called save.txt
+# Uses a custom format with sections so it can be loaded back later
+def save():
+    try:
+        # Open the file in write mode - this will create it if it doesn't exist
+        # or overwrite it if it does exist
+        file = open("save.txt", "w")
+        
+        # Write the TEAMS section header
+        file.write("TEAMS\n")
+        
+        # Loop through each team and write its data as a line
+        # Format: id|name|member1,member2,member3|points
+        for t in teams:
+            file.write(str(t["id"]) + "|" + t["name"] + "|")
+            # Join member names with commas so they stay together in one field
+            file.write(",".join(t["members"]))
+            file.write("|" + str(t["points"]) + "\n")
+        
+        # Write the INDIVIDUALS section header
+        file.write("INDIVIDUALS\n")
+        
+        # Loop through each individual and write its data as a line
+        # Format: id|name|points
+        for p in individuals:
+            file.write(str(p["id"]) + "|" + p["name"] + "|" + str(p["points"]) + "\n")
+        
+        # Write the SCORES section header
+        file.write("SCORES\n")
+        
+        # Loop through each event in the scores dictionary
+        for e in scores:
+            file.write("EVENT " + str(e) + "\n")
+            # For each event, write each participant's score
+            for pid in scores[e]:
+                file.write(pid + "|" + str(scores[e][pid]) + "\n")
+        
+        # Close the file to ensure data is written to disk
+        file.close()
+        
+        # Show success message to user
+        tkinter.messagebox.showinfo("Done", "Saved!")
+    except:
+        # If anything goes wrong (file permissions, disk full, etc.)
+        # show an error message instead of crashing
+        tkinter.messagebox.showerror("Error", "Couldn't save!")
+
+
+# NEW CODE FOR SESSION 5 - LOAD FUNCTION
+# This reads tournament data back from save.txt into the program
+# Reverses the save process by parsing the custom format
+def load():
+    # Need to modify the global lists and dictionary
+    global teams, individuals, scores
+    
+    try:
+        # Open the file in read mode
+        file = open("save.txt", "r")
+        
+        # Read all lines into a list
+        lines = file.readlines()
+        
+        # Close the file as soon as we're done reading
+        file.close()
+        
+        # Clear existing data before loading new data
+        # This prevents duplicates if load is clicked multiple times
+        teams = []
+        individuals = []
+        scores = {}
+        
+        # Track which section we're currently reading
+        section = ""
+        current_event = 0
+        
+        # Loop through each line in the file
+        for line in lines:
+            # Remove the newline character from the end of each line
+            line = line.strip()
+            
+            # Check for section headers to know what data follows
+            if line == "TEAMS":
+                section = "teams"
+            elif line == "INDIVIDUALS":
+                section = "individuals"
+            elif line == "SCORES":
+                section = "scores"
+            elif line.startswith("EVENT"):
+                # Extract the event number from "EVENT 1", "EVENT 2", etc.
+                current_event = int(line.split()[1])
+                # Create empty dictionary for this event's scores
+                scores[current_event] = {}
+                section = "event"
+            else:
+                # Process data lines based on which section we're in
+                if section == "teams":
+                    # Split the line by pipe character to get fields
+                    parts = line.split("|")
+                    # Reconstruct the team dictionary
+                    team = {
+                        "id": int(parts[0]),
+                        "name": parts[1],
+                        # Split members by comma to get list back
+                        "members": parts[2].split(","),
+                        "points": int(parts[3])
+                    }
+                    teams.append(team)
+                elif section == "individuals":
+                    parts = line.split("|")
+                    person = {
+                        "id": int(parts[0]),
+                        "name": parts[1],
+                        "points": int(parts[2])
+                    }
+                    individuals.append(person)
+                elif section == "event":
+                    # Score lines are format: TEAM1|100 or IND1|50
+                    parts = line.split("|")
+                    scores[current_event][parts[0]] = int(parts[1])
+        
+        # Show success message to user
+        tkinter.messagebox.showinfo("Done", "Loaded!")
+    except:
+        # If file doesn't exist or is corrupted, show error
+        tkinter.messagebox.showerror("Error", "No save file!")
 
 
 # Program starts here as it calls the main() function which then sets up the GUI screen leaving it ready for the user to interact with.
