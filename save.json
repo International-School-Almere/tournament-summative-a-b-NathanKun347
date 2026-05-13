@@ -1,0 +1,33 @@
+{
+    "teams": [
+        {
+            "id": 1,
+            "name": "Nathah",
+            "members": [],
+            "events": [
+                1
+            ],
+            "points": 20
+        }
+    ],
+    "individuals": [
+        {
+            "id": 1,
+            "name": "John",
+            "events": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "points": 20
+        }
+    ],
+    "scores": {
+        "1": {
+            "TEAM1": 22,
+            "IND1": 22
+        }
+    }
+}

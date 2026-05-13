@@ -1,13 +1,1 @@
-TEAMS
-1|cant be||14
-INDIVIDUALS
-1|rer|18
-2|not|16
-3|cannot be|20
-4|real|0
-SCORES
-EVENT 1
-TEAM1|5
-IND1|13
-IND2|12
-IND3|333
+

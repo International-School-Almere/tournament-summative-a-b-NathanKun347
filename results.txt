@@ -2,17 +2,11 @@ TOURNAMENT RESULTS
 ========================================
 
 STANDINGS
-1. cannot be (Individual) - 20
-2. rer (Individual) - 18
-3. not (Individual) - 16
-4. cant be (Team) - 14
+1. NATHAN (Individual) - 20
 
 EVENTS
 Event 1:
-  TEAM1: 5
-  IND1: 13
-  IND2: 12
-  IND3: 333
+  No scores
 Event 2:
   No scores
 Event 3:
