@@ -202,6 +202,51 @@ The current text format is very brittle - manually editing this file will likely
 #### What I learned?
 File IO requires closing the file, and I must remember to save all relevant data (like members' associated events). Strip() is essential to deal with newline characters read from a file, and the split() function is crucial for parsing the data that uses a specific delimiter. Organizing different types of data in a single text file requires using section headers. Global variables need to be explicitly declared with global within any function that is intended to entirely overwrite the existing global variable.
 
+## Session [06]
+
+**Date:** 29/04/2026  
+**Time spent:** 6 hours  
+**Focus:** Export function, final testing, bug fixes and code completion
+
+### Problems / Challenges
+- Export format takes 2 hours to develop as it needs to be professional for the college.
+- Still confusing write() and print(), with write() not automatically having a newline.
+- Integers are not getting to the export file, results in TypeError.
+- No proper formatting of the export file was available, so the file look untidy.
+- Had to implement headers, separators, and structured parts to the file to make it readable.
+- Full tournament workflow testing (register, score, calculate, export) took an hour.
+- Bug where calculate_points() crash when no scores have been entered was found, had to include checks.
+- Found that loading doesn't restore events list of individuals/teams, this had to be fixed.
+
+### Solutions / Actions Taken
+- A well formatted export file was developed to be professional with title, standings and event analysis sections.
+- String multiplication was used to create easy to read separators ("=" * 40).
+- Newlines were included into the write function (write("\n")).
+- The complete tournament workflow was tested end-to-end.
+- The missing events list in load was fixed by default loading to [1,2,3,4,5].
+- Detailed comments are present which explain the structure of the export file.
+- All 6 buttons now work together in a sequence.
+
+### Evidence
+- [Code was added] - export function used to create formattted results.txt.
+- [Bug fix] - Events list is now restored from loading function correctly.
+- [Testing] - A full tournament was played with 2 teams and 3 individuals, two events were scored.
+- [Screenshot] - Shows a formatted result.txt file with clearly visible sections.
+- [Final checks] - FR-001 to FR-008 are all now successfully implemented.
+
+### Reflection
+
+#### What went well?
+The export function works correctly and produce a professional report with sections, the load bug was fixed, and all 6 buttons now operate perfectly when working together through the tournament's workflow; which is (register 2 teams and 3 individuals, enter scores for 2 events, view leaderboard, save and export).
+
+#### What needs improvement?
+More details are needed in the report such as per-participant event score breakdown. Loading file is not robust and can be crashed by validation errors on loading, so it should be improved, and also an additional "Clear All" button should be added to reset the system.
+
+#### What did I learn?
+The use of string multiplication ( "=" * 40 ) simplifies visual separators. A structured and well-formatted report needs clear sections with relevant headings. Testing the whole workflow of the tournament is very crucial, not just the features individually. Fixing one function (load) may affect other components, so thorough testing is mandatory.
+
+---
+---
 ---
 
 # 7. Problems and Fixes

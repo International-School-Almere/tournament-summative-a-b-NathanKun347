@@ -86,6 +86,10 @@ def main():
     # Added in Session 5 - allows resuming a tournament after closing the program.
     Button(window, text="Load", command=load).pack(pady=5)
 
+    # Export button that generates a formatted results report for the college.
+    # Added in Session 6 - creates a professional tournament results file.
+    Button(window, text="Export", command=export).pack(pady=5)
+
 #MAIN LOOP
     # mainloop() keeps the program running and waits for user interaction.
     window.mainloop()
@@ -388,7 +392,7 @@ def calculate_points():
 
 # LEADERBOARD FUNCTION - COMPLETED IN SESSION 4
 # This creates a popup window showing the current rankings of all participants
-# It combines teams and individuals into one sorted list for them to be shown together
+# It combines teams and individuals into one sorted list for unified display
 def leaderboard():
     # Create the leaderboard popup window
     lb = Toplevel()
@@ -438,9 +442,10 @@ def leaderboard():
         listbox.insert(END, line)
 
 
-# NEW CODE FOR SESSION 5 - SAVE FUNCTION
+# SAVE FUNCTION - COMPLETED IN SESSION 5
 # This saves all tournament data to a text file called save.txt
 # Uses a custom format with sections so it can be loaded back later
+# The format is pipe-delimited (|) which is simpler than CSV for this project
 def save():
     try:
         # Open the file in write mode - this will create it if it doesn't exist
@@ -487,7 +492,7 @@ def save():
         tkinter.messagebox.showerror("Error", "Couldn't save!")
 
 
-# NEW CODE FOR SESSION 5 - LOAD FUNCTION
+# LOAD FUNCTION - COMPLETED IN SESSION 5
 # This reads tournament data back from save.txt into the program
 # Reverses the save process by parsing the custom format
 def load():
@@ -543,7 +548,9 @@ def load():
                         "name": parts[1],
                         # Split members by comma to get list back
                         "members": parts[2].split(","),
-                        "points": int(parts[3])
+                        "points": int(parts[3]),
+                        # FIXED IN SESSION 6 - restore events list with default all events
+                        "events": [1, 2, 3, 4, 5]
                     }
                     teams.append(team)
                 elif section == "individuals":
@@ -551,7 +558,9 @@ def load():
                     person = {
                         "id": int(parts[0]),
                         "name": parts[1],
-                        "points": int(parts[2])
+                        "points": int(parts[2]),
+                        # FIXED IN SESSION 6 - restore events list with default all events
+                        "events": [1, 2, 3, 4, 5]
                     }
                     individuals.append(person)
                 elif section == "event":
@@ -566,8 +575,79 @@ def load():
         tkinter.messagebox.showerror("Error", "No save file!")
 
 
+# NEW CODE FOR SESSION 6 - EXPORT FUNCTION
+# This generates a professional tournament results report as a text file
+# The report includes standings, event breakdowns, and winner announcements
+# This fulfills FR-007 (Results Export) from the design document
+def export():
+    try:
+        # Open results.txt in write mode to create the report
+        file = open("results.txt", "w")
+        
+        # Write the main title of the report
+        file.write("TOURNAMENT RESULTS\n")
+        
+        # Add a visual separator line using equals signs
+        file.write("=" * 40 + "\n\n")
+        
+        # STANDINGS SECTION
+        # This section shows the final rankings of all participants
+        file.write("STANDINGS\n")
+        
+        # Combine teams and individuals into one list for unified ranking
+        everyone = []
+        
+        # Add all teams with their type and points
+        for t in teams:
+            everyone.append((t["name"], "Team", t["points"]))
+        
+        # Add all individuals with their type and points
+        for p in individuals:
+            everyone.append((p["name"], "Individual", p["points"]))
+        
+        # Sort by points using bubble sort (manual implementation for BTEC)
+        for i in range(len(everyone)):
+            for j in range(len(everyone)-1):
+                if everyone[j][2] < everyone[j+1][2]:
+                    temp = everyone[j]
+                    everyone[j] = everyone[j+1]
+                    everyone[j+1] = temp
+        
+        # Write each participant's ranking to the file
+        for i in range(len(everyone)):
+            name, ptype, pts = everyone[i]
+            # Format: 1. Team Name (Team) - 50 points
+            file.write(str(i+1) + ". " + name + " (" + ptype + ") - " + str(pts) + "\n")
+        
+        # EVENTS SECTION
+        # This section shows the scores for each event
+        file.write("\nEVENTS\n")
+        
+        # Loop through all 5 events (1 to 5)
+        for e in range(1, 6):
+            file.write("Event " + str(e) + ":\n")
+            
+            # Check if this event has any scores entered
+            if e in scores:
+                # Write each participant's score for this event
+                for pid in scores[e]:
+                    file.write("  " + pid + ": " + str(scores[e][pid]) + "\n")
+            else:
+                # If no scores for this event yet
+                file.write("  No scores\n")
+        
+        # Close the file to ensure all data is written
+        file.close()
+        
+        # Show success message to user
+        tkinter.messagebox.showinfo("Done", "Exported to results.txt!")
+    except:
+        # If anything goes wrong during export
+        tkinter.messagebox.showerror("Error", "Couldn't export!")
+
+
 # Program starts here as it calls the main() function which then sets up the GUI screen leaving it ready for the user to interact with.
 
-# This line ensuress the main() function only runs when the file is executed directly.
+# This line ensures the main() function only runs when the file is executed directly.
 if __name__ == "__main__":
     main()
