@@ -303,64 +303,69 @@ Canvases and scroll bars in Tkinter allow for the creation of scrollable frames.
 
 ---
 
-# 11. Final Reflection/ evaluation for distinction
+## 11. Final Reflection/ evaluation for distinction
 
 > Write the contents of this section at the end of your project.
 
+---
+
+# 7. Issues & Resolutions
+
+| Problem | Reason | Fix | Status |
+|---|---|---|---|
+| Points added to current total rather than restarting calculation | Added points to current total rather than restarting the calculation | Added 2 for loops at the start of the function to reset points for each point entry before re-calculating | Fixed |
+| FileNotFoundError on loading when no save.txt file existed | The code was trying to open the save.txt file when none existed | Code wrapped in a try-except block to catch the error and tell the user about this | Fixed |
+| Missing events on loading save.txt file | Each event list for the participants was not stored in the save.txt file | When reloading the participant dictionaries, added a default `"events": [1,2,3,4,5]` for each participant if it was missing | Fixed |
+| Poor quality & unprofessional report output | The print/write() did not have sufficient formatting | Created an organized report including titles and separators (`"=" * 40`) along with sorted standings | Fixed |
+| `current_event` value not changing when changing to a different event | The OptionMenu didn't have a callback function set | Added `command=change_event` and used `selection.split()[1]` inside the function to extract event number | Fixed |
+| Edge cases for Bubble Sort failing when the list was too small | Loops ran at invalid values for score list sizes of 0 or 1 | Added conditions to the loops, stating that if the list had more than 1 entry, then it will run the loops | Fixed |
+| Tied scores wrongly allocated to ranking/points | Original points allocated based on position on the score list, not the actual rank (considering ties) | A `last_score` was used to compare scores, this made sure tied scores were given the same value/rank | Fixed |
+
+---
+
+# 11. Final Reflection / Evaluation
+
 ## What I achieved
-- Successfully developed a comprehensive GUI application called **Tournament Scoring System** using Python and Tkinter.
-- Mastered the use of advanced data structures, including nested dictionaries, lists of dictionaries, and tuples.
-- Implemented a custom bubble sort algorithm with built-in tie-handling, avoiding Python's built-in sorting methods.
-- Designed and implemented a multi-window application using the `Toplevel()` widget.
-- Developed a custom file persistence system for saving and loading tournament data using a pipe-delimited text format.
-- Incorporated robust input validation and exception handling to ensure data integrity and a reliable user experience.
-- Generated professionally formatted export reports suitable for college tournament administration.
-- Completed the full Software Development Life Cycle (SDLC), from analysis and design to implementation, testing, and evaluation.
+I successfully created a fully functional GUI application using Python which is fully capable of performing all tournament score keeping. This program, named "Tournament Scoring System," allows a user to enter team names, participants, enter each score, and display rankings. This project was the first one where I have truly understood the concept of nested lists, lists of lists and dictionaries, as these were heavily involved in my program. I made a custom bubble sort algorithm which worked effectively and in fact handled tied scores without having to use any pre-programmed sorts, and was very excited about that. The program includes features for opening and saving files, in addition to the custom way of saving and loading data I came up with. Furthermore, the project demonstrates my understanding of multiple windows and how to effectively integrate them. My programming also highlighted my abilities to write reliable, well validated code as there are several input validations in place and it's robust enough to handle multiple different types of exceptions. In essence, my program successfully implemented and developed the entire SDLC in a project for Unit 4, from the conceptual stage to a finished piece.
+
+---
 
 ## What worked well
-- The modular function-based structure made the code easier to debug and test.
-- The manual bubble sort implementation effectively demonstrated algorithmic understanding.
-- The nested dictionary structure for storing scores was both scalable and efficient.
-- The custom save/load system successfully handled multiple data types within a single file.
-- Consistent use of Tkinter widgets produced a well-structured and user-friendly graphical interface.
-- Input validation effectively prevented invalid data from entering the system.
+I had very well organized, function-based code which makes it easily readable and understandable. I feel that the bubble sort algorithm implemented clearly demonstrates my programming capabilities. The way in which I stored data and wrote it into a file was very organized and effective. It's very efficient at storing the vast amounts of different data and allows me to correctly re-load everything I need to when reading. Tkinter was reliable, the whole program gave a smooth, professional and efficient user experience with very good layout. Input validation was extremely useful and efficient in helping the user fill out everything and prevent them from making errors.
+
+---
 
 ## What did not work well
-- The `pack()` layout manager became increasingly difficult to manage as the interface grew in complexity.
-- Team member input fields remained visible even when **Individual** was selected, causing interface clutter.
-- Empty placeholder score fields added unnecessary visual clutter.
-- There was no functionality to edit or delete registrations after they were created.
-- The custom pipe-delimited save format was fragile and could be corrupted if edited manually.
-- The events list was not fully persisted in the save files.
-- Extensive use of global variables created tight coupling between functions.
+Using pack() as a layout manager was one of the things that did not go well. It became incredibly difficult to organize the widgets as my program got bigger and the spacing became increasingly unbalanced, making the program look less and less professional. Registering an 'Individual' member should not have prompted all the team fields to come up. The fact that I can't add new individuals and teams after the initial registration and that the blank spaces for the fields still exist after registering are things which should be avoided in future applications. Having no option to edit and delete already saved teams and individuals is another thing that was definitely lacking. Writing to a file using the format I did also had its vulnerabilities. Corruption would occur if any file editor was used that didn't exactly follow that format and it could even delete my file if I made a mistake writing it in the file. The saving/loading of events data were also being lost, and you also lose data this way. Having a massive amount of global variables makes things a lot harder to work with than it needed to be.
+
+---
 
 ## What I would improve next time
-- Use the `grid()` layout manager for better alignment and a more professional-looking interface.
-- Refactor the application using Object-Oriented Programming (OOP) to improve maintainability.
-- Add edit and delete functionality with confirmation dialogs.
-- Replace the custom save format with JSON for improved reliability and readability.
-- Implement dynamic widget creation and removal based on participant type.
-- Add automated unit tests using `pytest`.
-- Include data visualization using `matplotlib`.
-- Add keyboard shortcuts such as `Ctrl+S` for Save and `Ctrl+R` for Register.
+I would probably switch to using the grid() manager for the layout rather than pack() in order to get everything organized perfectly. The biggest thing I would improve is to introduce object-oriented programming, to make the program cleaner and easier to work with. Having buttons for editing and deleting registered teams and individuals would also significantly improve the usability of the program. If there's no valid file present and I press "Load", a simple message will show up and a default template will be filled, allowing the user to use the program to enter new scores even if it's their first time using it. If I were writing to a pipe-delimited text file, I'd add code so that it wouldn't overwrite all of your data if you made a mistake when using a text editor or if some unexpected event occurred, rather than completely wipe it out. The missing events data issue would also be addressed more thoroughly, possibly storing them more securely or having them re-initialized correctly. I'd try to reduce the number of global variables.
+
+---
 
 ## Final outcome
-The Tournament Scoring System is a fully functional, distinction-quality Python GUI application that satisfies all requirements of the BTEC Unit 4 assignment brief. It allows college staff to register up to four teams of five members each and twenty individual competitors, enter scores for five events, automatically calculate rankings and points using a manually implemented bubble sort algorithm with tie handling, display a live leaderboard, save and load tournament data, and export professional results reports. The project was developed over six documented sessions and evolved from a simple Tkinter prototype into a complete data-driven application featuring file handling, advanced data structures, and robust validation.
+The Tournament Scoring System is a complete and fully functional GUI Python program, capable of performing all specified operations for Unit 4. It is capable of entering teams of up to five individuals and 20 individuals with individual IDs, scores for five defined events, automatic calculation and display of real-time scores and leaderboards, saving and loading of tournament data into a text file, and professional reporting. The project spanned over 6 documented sessions where it evolved from a prototype to its current fully functional state and has demonstrated my capabilities with Tkinter, advanced data structures, algorithmic programming and thorough exception handling.
+
+---
 
 ## Did I meet the success criteria (design specifications)?
 - [x] FR-001: Participant Registration - Register 4 teams of 5 members each and 20 individual competitors with unique ID assignment.
 - [x] FR-002: Event Definition - Support exactly 5 distinct events with team and individual participant types.
-- [x] FR-003: Scoring System - Award points using the distribution `[20, 18, 16, 14, 12, 10, 8, 6, 4, 2]` with tie handling.
+- [x] FR-003: Scoring System - Award points using the distribution [20, 18, 16, 14, 12, 10, 8, 6, 4, 2] with tie handling.
 - [x] FR-004: Flexible Entry - Allow full tournament or selected event participation.
 - [x] FR-005: Real-time Scoring - Input raw scores and automatically calculate rankings and points.
 - [x] FR-006: Leaderboard Display - Show a live combined ranking of teams and individuals.
-- [x] FR-007: Results Export - Generate a formatted `results.txt` report.
+- [x] FR-007: Results Export - Generate a formatted results.txt report.
 - [x] FR-008: Data Validation - Prevent duplicate names, empty entries, invalid types, and exceeded limits.
-- [x] NFR-001: Usability - Intuitive GUI with clear labels, buttons, and feedback.
+- [x] NFR-001: Usability - Intuitive GUI with clear labels, buttons and feedback.
 - [x] NFR-002: Reliability - Save/load functionality and exception handling prevent data loss and crashes.
-- [x] NFR-003: Performance - Instant updates with acceptable O(n²) complexity for fewer than 30 participants.
+- [x] NFR-003: Performance - Instant updates with acceptable O(n) complexity for fewer than 30 participants.
 - [x] NFR-004: Portability - Runs on standard Windows PCs with Python 3.x and Tkinter.
 - [x] NFR-005: Maintainability - Well-commented procedural structure that is easy to modify.
 
+---
+
 ## Final evaluation
-This project demonstrates distinction-level programming skills by integrating complex algorithms, advanced data structures, file handling, thorough validation, and a multi-window graphical user interface. The manually implemented bubble sort with tie handling explicitly demonstrates the algorithmic understanding required by the BTEC distinction criteria. The system successfully manages the full tournament lifecycle, from participant registration to final report generation, while incorporating reliable data persistence and robust error handling. Although the procedural architecture and `pack()`-based layout present some limitations, the core functionality is stable, well documented, and fully aligned with the design specifications. The iterative development across six sessions demonstrates strong problem-solving, planning, and project management abilities. Considering the project timeline, the final product is a significant achievement and fully satisfies all distinction-level assessment criteria for Unit 4 Programming.
+This project exhibits distinction-level programming skills by integrating a robust GUI, advanced data structures, a custom sorting algorithm, comprehensive input validation, file handling capabilities, and exception management. The implementation of a bubble sort algorithm with accurate handling of tied scores directly addresses the requirements for demonstrating algorithmic understanding at the distinction level. The system effectively manages the entire tournament lifecycle, from data input to report generation, while ensuring data integrity and user-friendliness. Despite the limitations of pack() layout and a purely procedural approach, the core functionality is stable and meets all specified design criteria. The project's iterative development across six documented sessions highlights strong problem-solving and project management skills, making it a significant achievement that fulfills the criteria for a distinction grade for Unit 4 Programming.
